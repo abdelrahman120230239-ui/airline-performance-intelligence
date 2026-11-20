@@ -1,0 +1,35 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Reported causes · Chart",
+  "name": "c04db299234b21886397",
+  "options": {
+    "targetVisualNames": [
+      "8412b2473f186a9c8d30",
+      "941c76c812e45a1729ef"
+    ],
+    "suppressData": true,
+    "suppressDisplay": false,
+    "suppressActiveSection": true,
+    "applyOnlyToTargetVisuals": false
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "ab539696bc63e564a5d5",
+    "sections": {
+      "ab539696bc63e564a5d5": {
+        "visualContainers": {
+          "8412b2473f186a9c8d30": {
+            "singleVisual": {}
+          },
+          "941c76c812e45a1729ef": {
+            "singleVisual": {
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

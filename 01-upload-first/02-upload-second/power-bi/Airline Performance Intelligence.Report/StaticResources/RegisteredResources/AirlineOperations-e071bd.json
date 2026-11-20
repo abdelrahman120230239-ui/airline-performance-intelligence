@@ -1,0 +1,35 @@
+{
+  "name": "Airline Operations",
+  "dataColors": [
+    "#007F78",
+    "#6B5AA4",
+    "#9C5508",
+    "#28679A",
+    "#BD5949",
+    "#427657"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#172D43",
+  "tableAccent": "#007F78",
+  "good": "#007F78",
+  "neutral": "#9C5508",
+  "bad": "#A33B46",
+  "textClasses": {
+    "callout": {
+      "fontFace": "Segoe UI",
+      "color": "#172D43"
+    },
+    "title": {
+      "fontFace": "Segoe UI",
+      "color": "#172D43"
+    },
+    "header": {
+      "fontFace": "Segoe UI",
+      "color": "#172D43"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "color": "#172D43"
+    }
+  }
+}
