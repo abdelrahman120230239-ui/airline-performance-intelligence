@@ -1,0 +1,63 @@
+table DimDate
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		formatString: yyyy-MM-dd
+		isKey
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: Year
+
+	column 'Year Month'
+		dataType: string
+		sortByColumn: YearMonthKey
+		summarizeBy: none
+		sourceColumn: Year Month
+
+	column YearMonthKey
+		dataType: int64
+		isHidden
+		summarizeBy: none
+		sourceColumn: YearMonthKey
+
+	column Weekday
+		dataType: string
+		sortByColumn: WeekdayNumber
+		summarizeBy: none
+		sourceColumn: Weekday
+
+	column WeekdayNumber
+		dataType: int64
+		isHidden
+		summarizeBy: none
+		sourceColumn: WeekdayNumber
+
+	column IsInScope
+		dataType: boolean
+		isHidden
+		summarizeBy: none
+		sourceColumn: IsInScope
+
+	partition DimDate = m
+		mode: import
+		source =
+			let
+			    First = Date.StartOfYear(List.Min(SourceMonths)),
+			    Last = Date.EndOfYear(List.Max(SourceMonths)),
+			    Days = List.Dates(First, Duration.Days(Last - First) + 1, #duration(1, 0, 0, 0)),
+			    Dates = Table.FromColumns({Days}, type table [Date = date]),
+			    Years = Table.AddColumn(Dates, "Year", each Date.Year([Date]), Int64.Type),
+			    Months = Table.AddColumn(Years, "Year Month", each Date.ToText([Date], [Format="yyyy-MM", Culture="en-US"]), type text),
+			    MonthKey = Table.AddColumn(Months, "YearMonthKey", each [Year] * 100 + Date.Month([Date]), Int64.Type),
+			    Week = Table.AddColumn(MonthKey, "Weekday", each Date.DayOfWeekName([Date], "en-US"), type text),
+			    WeekSort = Table.AddColumn(Week, "WeekdayNumber", each Date.DayOfWeek([Date], Day.Monday) + 1, Int64.Type),
+			    Coverage = Table.AddColumn(WeekSort, "IsInScope", each List.Contains(SourceMonths, Date.StartOfMonth([Date])), type logical)
+			in
+			    Coverage

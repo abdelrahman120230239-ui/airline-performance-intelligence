@@ -1,0 +1,169 @@
+Month,Category,Field or test,Value,Share of scheduled rows
+2024-01,File control,rows,547271,
+2024-01,File control,date_min,2024-01-01,
+2024-01,File control,date_max,2024-01-31,
+2024-01,Source nulls,FlightDate,0,0.000000%
+2024-01,Source nulls,DOT_ID_Reporting_Airline,0,0.000000%
+2024-01,Source nulls,Reporting_Airline,0,0.000000%
+2024-01,Source nulls,Flight_Number_Reporting_Airline,0,0.000000%
+2024-01,Source nulls,OriginAirportID,0,0.000000%
+2024-01,Source nulls,Origin,0,0.000000%
+2024-01,Source nulls,OriginCityName,0,0.000000%
+2024-01,Source nulls,OriginState,0,0.000000%
+2024-01,Source nulls,DestAirportID,0,0.000000%
+2024-01,Source nulls,Dest,0,0.000000%
+2024-01,Source nulls,DestCityName,0,0.000000%
+2024-01,Source nulls,DestState,0,0.000000%
+2024-01,Source nulls,CRSDepTime,0,0.000000%
+2024-01,Source nulls,CRSArrTime,0,0.000000%
+2024-01,Source nulls,DepDelay,19858,3.628550%
+2024-01,Source nulls,DepDel15,19858,3.628550%
+2024-01,Source nulls,ArrDelay,21901,4.001856%
+2024-01,Source nulls,ArrDel15,21901,4.001856%
+2024-01,Source nulls,Cancelled,0,0.000000%
+2024-01,Source nulls,CancellationCode,526882,96.274423%
+2024-01,Source nulls,Diverted,0,0.000000%
+2024-01,Source nulls,CarrierDelay,420861,76.901754%
+2024-01,Source nulls,WeatherDelay,420861,76.901754%
+2024-01,Source nulls,NASDelay,420861,76.901754%
+2024-01,Source nulls,SecurityDelay,420861,76.901754%
+2024-01,Source nulls,LateAircraftDelay,420861,76.901754%
+2024-01,Source nulls,Flights,0,0.000000%
+2024-01,Diagnostic,duplicate_candidate_excess,0,0.000000%
+2024-01,Diagnostic,duplicate_projected_row_excess,0,0.000000%
+2024-01,Diagnostic,completed_without_arrival_delay,0,0.000000%
+2024-01,Diagnostic,noncancelled_without_departure_delay,0,0.000000%
+2024-01,Diagnostic,cancel_with_unknown_reason,0,0.000000%
+2024-01,Diagnostic,cancel_code_for_noncancelled,0,0.000000%
+2024-01,Diagnostic,arrival_indicator_disagreement,0,0.000000%
+2024-01,Diagnostic,departure_indicator_disagreement,0,0.000000%
+2024-01,Diagnostic,late_missing_all_causes,0,0.000000%
+2024-01,Diagnostic,late_incomplete_causes,0,0.000000%
+2024-01,Diagnostic,late_cause_sum_disagreement,0,0.000000%
+2024-01,Diagnostic,nonlate_with_any_cause,0,0.000000%
+2024-02,File control,rows,519221,
+2024-02,File control,date_min,2024-02-01,
+2024-02,File control,date_max,2024-02-29,
+2024-02,Source nulls,FlightDate,0,0.000000%
+2024-02,Source nulls,DOT_ID_Reporting_Airline,0,0.000000%
+2024-02,Source nulls,Reporting_Airline,0,0.000000%
+2024-02,Source nulls,Flight_Number_Reporting_Airline,0,0.000000%
+2024-02,Source nulls,OriginAirportID,0,0.000000%
+2024-02,Source nulls,Origin,0,0.000000%
+2024-02,Source nulls,OriginCityName,0,0.000000%
+2024-02,Source nulls,OriginState,0,0.000000%
+2024-02,Source nulls,DestAirportID,0,0.000000%
+2024-02,Source nulls,Dest,0,0.000000%
+2024-02,Source nulls,DestCityName,0,0.000000%
+2024-02,Source nulls,DestState,0,0.000000%
+2024-02,Source nulls,CRSDepTime,0,0.000000%
+2024-02,Source nulls,CRSArrTime,0,0.000000%
+2024-02,Source nulls,DepDelay,2876,0.553907%
+2024-02,Source nulls,DepDel15,2876,0.553907%
+2024-02,Source nulls,ArrDelay,3952,0.761140%
+2024-02,Source nulls,ArrDel15,3952,0.761140%
+2024-02,Source nulls,Cancelled,0,0.000000%
+2024-02,Source nulls,CancellationCode,516219,99.421826%
+2024-02,Source nulls,Diverted,0,0.000000%
+2024-02,Source nulls,CarrierDelay,437185,84.200177%
+2024-02,Source nulls,WeatherDelay,437185,84.200177%
+2024-02,Source nulls,NASDelay,437185,84.200177%
+2024-02,Source nulls,SecurityDelay,437185,84.200177%
+2024-02,Source nulls,LateAircraftDelay,437185,84.200177%
+2024-02,Source nulls,Flights,0,0.000000%
+2024-02,Diagnostic,duplicate_candidate_excess,0,0.000000%
+2024-02,Diagnostic,duplicate_projected_row_excess,0,0.000000%
+2024-02,Diagnostic,completed_without_arrival_delay,0,0.000000%
+2024-02,Diagnostic,noncancelled_without_departure_delay,0,0.000000%
+2024-02,Diagnostic,cancel_with_unknown_reason,0,0.000000%
+2024-02,Diagnostic,cancel_code_for_noncancelled,0,0.000000%
+2024-02,Diagnostic,arrival_indicator_disagreement,0,0.000000%
+2024-02,Diagnostic,departure_indicator_disagreement,0,0.000000%
+2024-02,Diagnostic,late_missing_all_causes,0,0.000000%
+2024-02,Diagnostic,late_incomplete_causes,0,0.000000%
+2024-02,Diagnostic,late_cause_sum_disagreement,0,0.000000%
+2024-02,Diagnostic,nonlate_with_any_cause,0,0.000000%
+2025-01,File control,rows,539747,
+2025-01,File control,date_min,2025-01-01,
+2025-01,File control,date_max,2025-01-31,
+2025-01,Source nulls,FlightDate,0,0.000000%
+2025-01,Source nulls,DOT_ID_Reporting_Airline,0,0.000000%
+2025-01,Source nulls,Reporting_Airline,0,0.000000%
+2025-01,Source nulls,Flight_Number_Reporting_Airline,0,0.000000%
+2025-01,Source nulls,OriginAirportID,0,0.000000%
+2025-01,Source nulls,Origin,0,0.000000%
+2025-01,Source nulls,OriginCityName,0,0.000000%
+2025-01,Source nulls,OriginState,0,0.000000%
+2025-01,Source nulls,DestAirportID,0,0.000000%
+2025-01,Source nulls,Dest,0,0.000000%
+2025-01,Source nulls,DestCityName,0,0.000000%
+2025-01,Source nulls,DestState,0,0.000000%
+2025-01,Source nulls,CRSDepTime,0,0.000000%
+2025-01,Source nulls,CRSArrTime,0,0.000000%
+2025-01,Source nulls,DepDelay,15923,2.950086%
+2025-01,Source nulls,DepDel15,15923,2.950086%
+2025-01,Source nulls,ArrDelay,17478,3.238184%
+2025-01,Source nulls,ArrDel15,17478,3.238184%
+2025-01,Source nulls,Cancelled,0,0.000000%
+2025-01,Source nulls,CancellationCode,523435,96.977843%
+2025-01,Source nulls,Diverted,0,0.000000%
+2025-01,Source nulls,CarrierDelay,441617,81.819260%
+2025-01,Source nulls,WeatherDelay,441617,81.819260%
+2025-01,Source nulls,NASDelay,441617,81.819260%
+2025-01,Source nulls,SecurityDelay,441617,81.819260%
+2025-01,Source nulls,LateAircraftDelay,441617,81.819260%
+2025-01,Source nulls,Flights,0,0.000000%
+2025-01,Diagnostic,duplicate_candidate_excess,0,0.000000%
+2025-01,Diagnostic,duplicate_projected_row_excess,0,0.000000%
+2025-01,Diagnostic,completed_without_arrival_delay,0,0.000000%
+2025-01,Diagnostic,noncancelled_without_departure_delay,0,0.000000%
+2025-01,Diagnostic,cancel_with_unknown_reason,0,0.000000%
+2025-01,Diagnostic,cancel_code_for_noncancelled,0,0.000000%
+2025-01,Diagnostic,arrival_indicator_disagreement,0,0.000000%
+2025-01,Diagnostic,departure_indicator_disagreement,0,0.000000%
+2025-01,Diagnostic,late_missing_all_causes,0,0.000000%
+2025-01,Diagnostic,late_incomplete_causes,0,0.000000%
+2025-01,Diagnostic,late_cause_sum_disagreement,0,0.000000%
+2025-01,Diagnostic,nonlate_with_any_cause,0,0.000000%
+2025-02,File control,rows,504884,
+2025-02,File control,date_min,2025-02-01,
+2025-02,File control,date_max,2025-02-28,
+2025-02,Source nulls,FlightDate,0,0.000000%
+2025-02,Source nulls,DOT_ID_Reporting_Airline,0,0.000000%
+2025-02,Source nulls,Reporting_Airline,0,0.000000%
+2025-02,Source nulls,Flight_Number_Reporting_Airline,0,0.000000%
+2025-02,Source nulls,OriginAirportID,0,0.000000%
+2025-02,Source nulls,Origin,0,0.000000%
+2025-02,Source nulls,OriginCityName,0,0.000000%
+2025-02,Source nulls,OriginState,0,0.000000%
+2025-02,Source nulls,DestAirportID,0,0.000000%
+2025-02,Source nulls,Dest,0,0.000000%
+2025-02,Source nulls,DestCityName,0,0.000000%
+2025-02,Source nulls,DestState,0,0.000000%
+2025-02,Source nulls,CRSDepTime,0,0.000000%
+2025-02,Source nulls,CRSArrTime,0,0.000000%
+2025-02,Source nulls,DepDelay,7139,1.413988%
+2025-02,Source nulls,DepDel15,7139,1.413988%
+2025-02,Source nulls,ArrDelay,8408,1.665333%
+2025-02,Source nulls,ArrDel15,8408,1.665333%
+2025-02,Source nulls,Cancelled,0,0.000000%
+2025-02,Source nulls,CancellationCode,497479,98.533326%
+2025-02,Source nulls,Diverted,0,0.000000%
+2025-02,Source nulls,CarrierDelay,401782,79.579072%
+2025-02,Source nulls,WeatherDelay,401782,79.579072%
+2025-02,Source nulls,NASDelay,401782,79.579072%
+2025-02,Source nulls,SecurityDelay,401782,79.579072%
+2025-02,Source nulls,LateAircraftDelay,401782,79.579072%
+2025-02,Source nulls,Flights,0,0.000000%
+2025-02,Diagnostic,duplicate_candidate_excess,0,0.000000%
+2025-02,Diagnostic,duplicate_projected_row_excess,0,0.000000%
+2025-02,Diagnostic,completed_without_arrival_delay,0,0.000000%
+2025-02,Diagnostic,noncancelled_without_departure_delay,0,0.000000%
+2025-02,Diagnostic,cancel_with_unknown_reason,0,0.000000%
+2025-02,Diagnostic,cancel_code_for_noncancelled,0,0.000000%
+2025-02,Diagnostic,arrival_indicator_disagreement,0,0.000000%
+2025-02,Diagnostic,departure_indicator_disagreement,0,0.000000%
+2025-02,Diagnostic,late_missing_all_causes,0,0.000000%
+2025-02,Diagnostic,late_incomplete_causes,0,0.000000%
+2025-02,Diagnostic,late_cause_sum_disagreement,0,0.000000%
+2025-02,Diagnostic,nonlate_with_any_cause,0,0.000000%

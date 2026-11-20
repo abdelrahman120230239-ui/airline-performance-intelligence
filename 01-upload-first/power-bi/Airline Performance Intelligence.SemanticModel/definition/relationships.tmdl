@@ -1,0 +1,23 @@
+relationship 3ee10b83-ac7c-5dc6-898a-3855fd19f53f
+	fromColumn: FactFlight.FlightDate
+	toColumn: DimDate.Date
+
+relationship 727c5c1c-7f1f-5040-be29-ba2280a2da87
+	fromColumn: FactFlight.CarrierID
+	toColumn: DimCarrier.CarrierID
+
+relationship 4b47f58b-ac81-57a3-9a3d-78d79bed7d3e
+	fromColumn: FactFlight.OriginAirportID
+	toColumn: DimOriginAirport.AirportID
+
+relationship b30ea858-b5a9-583f-98f2-36f48b12e7ed
+	fromColumn: FactFlight.DestinationAirportID
+	toColumn: DimDestinationAirport.AirportID
+
+relationship 4b53c25e-e9c5-54f5-b05b-56b9c85d95a8
+	fromColumn: FactFlight.RouteID
+	toColumn: DimRoute.RouteID
+
+relationship ddb97fbc-b3f6-504d-a68a-dd63fe694ec4
+	fromColumn: FactFlight.CancellationKey
+	toColumn: DimCancellation.CancellationKey

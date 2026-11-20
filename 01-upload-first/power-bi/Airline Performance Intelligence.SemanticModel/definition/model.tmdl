@@ -1,0 +1,21 @@
+model Model
+	culture: en-US
+	sourceQueryCulture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	dataAccessOptions
+		legacyRedirects
+
+	annotation __PBI_TimeIntelligenceEnabled = 0
+
+ref table FactFlight
+ref table DimDate
+ref table DimCarrier
+ref table DimOriginAirport
+ref table DimDestinationAirport
+ref table DimRoute
+ref table DimCancellation
+ref table DimDelayCause
+ref table CarrierAccess
+ref table FlightMetrics
+
+ref role CarrierViewer

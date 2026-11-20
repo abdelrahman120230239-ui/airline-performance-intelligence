@@ -1,0 +1,22 @@
+table DimCancellation
+
+	column CancellationKey
+		dataType: string
+		isHidden
+		isKey
+		summarizeBy: none
+		sourceColumn: CancellationKey
+
+	column Reason
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Reason
+
+	partition DimCancellation = m
+		mode: import
+		source =
+			#table(
+			    type table [CancellationKey = text, Reason = text],
+			    {{"A", "Air carrier"}, {"B", "Weather"}, {"C", "National Aviation System"}, {"D", "Security"},
+			     {"?", "Unknown or missing"}, {"-", "Not applicable"}}
+			)

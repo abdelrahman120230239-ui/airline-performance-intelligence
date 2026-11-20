@@ -1,0 +1,33 @@
+table DimOriginAirport
+
+	column AirportID
+		dataType: int64
+		isHidden
+		isKey
+		summarizeBy: none
+		sourceColumn: AirportID
+
+	column Code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Code
+
+	column City
+		dataType: string
+		summarizeBy: none
+		sourceColumn: City
+
+	column State
+		dataType: string
+		summarizeBy: none
+		sourceColumn: State
+
+	column Airport
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Airport
+
+	partition DimOriginAirport = m
+		mode: import
+		source =
+			AirportCatalog

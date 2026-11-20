@@ -1,0 +1,21 @@
+table CarrierAccess
+	isHidden
+
+	column UPN
+		dataType: string
+		summarizeBy: none
+		sourceColumn: UPN
+
+	column CarrierID
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: CarrierID
+
+	partition CarrierAccess = m
+		mode: import
+		source =
+			#table(
+			    type table [UPN = text, CarrierID = Int64.Type],
+			    {{"ops.aa@example.com", 19805}, {"ops.network@example.com", 19805},
+			     {"ops.network@example.com", 19790}}
+			)

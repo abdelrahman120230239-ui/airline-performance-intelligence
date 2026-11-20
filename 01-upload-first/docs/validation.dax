@@ -1,0 +1,72 @@
+// Run each EVALUATE statement separately in Power BI Desktop DAX Query View.
+// Compare rows with monthly-reconciliation.csv and 04-validation.md.
+
+EVALUATE
+SUMMARIZECOLUMNS (
+    DimDate[Year Month],
+    TREATAS ( { TRUE () }, DimDate[IsInScope] ),
+    "Scheduled", [Scheduled Flights],
+    "Comparable Arrivals", [Comparable Arrivals],
+    "On Time", [On-Time Arrivals],
+    "Late", [Delayed Arrivals],
+    "Comparable Departures", [Comparable Departures],
+    "On-Time Departures", [On-Time Departures],
+    "Cancelled", [Cancelled Flights],
+    "Diverted", [Diverted Flights],
+    "60+ Late", [Flights Delayed 60+ Minutes],
+    "Late Minutes", [Arrival Delay Minutes 15+],
+    "Cause Minutes", [Reported Cause Minutes],
+    "Cause Coverage", [Reported Cause Coverage %],
+    "OTP", [On-Time Arrival %],
+    "Cancellation Rate", [Cancellation %],
+    "YoY pp", [On-Time Arrival YoY pp]
+)
+ORDER BY DimDate[Year Month]
+
+EVALUATE
+CALCULATETABLE (
+    ROW (
+        "Scheduled", [Scheduled Flights],
+        "Comparable", [Comparable Arrivals],
+        "On Time", [On-Time Arrivals],
+        "Late", [Delayed Arrivals],
+        "OTP", [On-Time Arrival %],
+        "Cancelled", [Cancelled Flights],
+        "Late Minutes", [Arrival Delay Minutes 15+]
+    ),
+    TREATAS ( { DATE ( 2025, 1, 1 ) }, DimDate[Date] ),
+    TREATAS ( { 19805 }, DimCarrier[CarrierID] ),
+    TREATAS ( { 12478 }, DimOriginAirport[AirportID] ),
+    TREATAS ( { 12892 }, DimDestinationAirport[AirportID] )
+)
+
+EVALUATE
+CALCULATETABLE (
+    ROW (
+        "Scheduled", [Scheduled Flights],
+        "Comparable", [Comparable Arrivals],
+        "On Time", [On-Time Arrivals],
+        "Late", [Delayed Arrivals],
+        "Cancelled", [Cancelled Flights],
+        "Diverted", [Diverted Flights],
+        "OTP", [On-Time Arrival %],
+        "Cancellation Rate", [Cancellation %],
+        "Diversion Rate", [Diversion %],
+        "Late Minutes", [Arrival Delay Minutes 15+],
+        "Cause Minutes", [Reported Cause Minutes]
+    ),
+    TREATAS ( { 2025010000472, 2025010000416, 2025010000085, 2025010000054 }, FactFlight[SourceRowID] )
+)
+
+EVALUATE
+CALCULATETABLE (
+    ROW (
+        "Scheduled", [Scheduled Flights],
+        "OTP", [On-Time Arrival %],
+        "LY Scheduled Matched", [Scheduled Flights LY Matched],
+        "LY OTP Matched", [On-Time Arrival % LY Matched],
+        "YoY pp", [On-Time Arrival YoY pp],
+        "Scheduled YTD", [Scheduled Flights YTD]
+    ),
+    TREATAS ( { "2025-02" }, DimDate[Year Month] )
+)

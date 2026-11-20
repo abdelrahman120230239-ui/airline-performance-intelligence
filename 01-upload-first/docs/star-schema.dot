@@ -1,0 +1,73 @@
+digraph AirlinePerformance {
+  graph [bgcolor="#F1F5F8", rankdir=LR, splines=polyline, nodesep=0.45, ranksep=0.85,
+         pad=0.34, dpi=155, labelloc=t, labeljust=l, fontname="DejaVu Sans Bold", fontsize=23,
+         fontcolor="#142D46", label="Airline Performance Intelligence\nStar schema and filter direction"];
+  node [shape=plain, fontname="DejaVu Sans", fontcolor="#172D43"];
+  edge [fontname="DejaVu Sans", fontsize=10, color="#007F78", fontcolor="#007F78", penwidth=1.6, arrowsize=0.7];
+  date [label=<
+    <TABLE BORDER="1" COLOR="#DBE5ED" BGCOLOR="white" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" WIDTH="198">
+    <TR><TD BGCOLOR="#165C5D" ALIGN="LEFT"><FONT COLOR="white"><B>DimDate</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">PK · Date<BR ALIGN="LEFT"/>Year, month, weekday<BR ALIGN="LEFT"/>Source coverage</TD></TR>
+    </TABLE>>];
+  carrier [label=<
+    <TABLE BORDER="1" COLOR="#DBE5ED" BGCOLOR="white" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" WIDTH="198">
+    <TR><TD BGCOLOR="#165C5D" ALIGN="LEFT"><FONT COLOR="white"><B>DimCarrier</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">PK · CarrierID<BR ALIGN="LEFT"/>Reporting code and label<BR ALIGN="LEFT"/>CarrierViewer role filter</TD></TR>
+    </TABLE>>];
+  origin [label=<
+    <TABLE BORDER="1" COLOR="#DBE5ED" BGCOLOR="white" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" WIDTH="198">
+    <TR><TD BGCOLOR="#165C5D" ALIGN="LEFT"><FONT COLOR="white"><B>DimOriginAirport</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">PK · AirportID<BR ALIGN="LEFT"/>Scheduled origin role<BR ALIGN="LEFT"/>Code, city, state</TD></TR>
+    </TABLE>>];
+  dest [label=<
+    <TABLE BORDER="1" COLOR="#DBE5ED" BGCOLOR="white" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" WIDTH="198">
+    <TR><TD BGCOLOR="#165C5D" ALIGN="LEFT"><FONT COLOR="white"><B>DimDestinationAirport</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">PK · AirportID<BR ALIGN="LEFT"/>Scheduled destination role<BR ALIGN="LEFT"/>Code, city, state</TD></TR>
+    </TABLE>>];
+  route [label=<
+    <TABLE BORDER="1" COLOR="#DBE5ED" BGCOLOR="white" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" WIDTH="198">
+    <TR><TD BGCOLOR="#165C5D" ALIGN="LEFT"><FONT COLOR="white"><B>DimRoute</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">PK · RouteID<BR ALIGN="LEFT"/>Directional route label</TD></TR>
+    </TABLE>>];
+  cancel [label=<
+    <TABLE BORDER="1" COLOR="#DBE5ED" BGCOLOR="white" CELLBORDER="0" CELLSPACING="0" CELLPADDING="8" WIDTH="198">
+    <TR><TD BGCOLOR="#165C5D" ALIGN="LEFT"><FONT COLOR="white"><B>DimCancellation</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">PK · CancellationKey<BR ALIGN="LEFT"/>Reported reason</TD></TR>
+    </TABLE>>];
+  flight [label=<
+    <TABLE BORDER="1" COLOR="#DBE5ED" BGCOLOR="white" CELLBORDER="0" CELLSPACING="0" CELLPADDING="9" WIDTH="268">
+    <TR><TD BGCOLOR="#142D46" ALIGN="LEFT"><FONT COLOR="white" POINT-SIZE="16"><B>FactFlight</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">One BTS scheduled segment<BR ALIGN="LEFT"/>Trace key · SourceRowID</TD></TR>
+    <TR><TD PORT="date" BGCOLOR="#E6F2F1" ALIGN="LEFT">FK · FlightDate</TD></TR>
+    <TR><TD PORT="carrier" BGCOLOR="#E6F2F1" ALIGN="LEFT">FK · CarrierID</TD></TR>
+    <TR><TD PORT="origin" BGCOLOR="#E6F2F1" ALIGN="LEFT">FK · OriginAirportID</TD></TR>
+    <TR><TD PORT="dest" BGCOLOR="#E6F2F1" ALIGN="LEFT">FK · DestinationAirportID</TD></TR>
+    <TR><TD PORT="route" BGCOLOR="#E6F2F1" ALIGN="LEFT">FK · RouteID</TD></TR>
+    <TR><TD PORT="cancel" BGCOLOR="#E6F2F1" ALIGN="LEFT">FK · CancellationKey</TD></TR>
+    <TR><TD ALIGN="LEFT">Signed delays and cause minutes<BR ALIGN="LEFT"/>Outcome flags and local times</TD></TR>
+    </TABLE>>];
+  aux [label=<
+    <TABLE BORDER="1" COLOR="#DBE5ED" BGCOLOR="white" CELLBORDER="0" CELLSPACING="0" CELLPADDING="9" WIDTH="242">
+    <TR><TD BGCOLOR="#425C75" ALIGN="LEFT"><FONT COLOR="white"><B>Disconnected tables</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">DimDelayCause · Attribution groups</TD></TR>
+    <TR><TD ALIGN="LEFT">CarrierAccess · Sample UPN map</TD></TR>
+    <TR><TD ALIGN="LEFT">FlightMetrics · Explicit DAX library</TD></TR>
+    </TABLE>>];
+  note [label=<
+    <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" WIDTH="240">
+    <TR><TD ALIGN="LEFT"><FONT COLOR="#52687B"><B>1 → *</B> · Active, single direction</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT COLOR="#52687B">Airport roles share an ETL catalog.</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT"><FONT COLOR="#52687B">Each role filters FactFlight directly.</FONT></TD></TR>
+    </TABLE>>];
+  {rank=same; date; carrier; origin; dest; route; cancel;}
+  {rank=same; aux; note;}
+  date -> carrier -> origin -> dest -> route -> cancel [style=invis];
+  date:e -> flight:date:w [label="1 → *"];
+  carrier:e -> flight:carrier:w [label="1 → *"];
+  origin:e -> flight:origin:w [label="1 → *"];
+  dest:e -> flight:dest:w [label="1 → *"];
+  route:e -> flight:route:w [label="1 → *"];
+  cancel:e -> flight:cancel:w [label="1 → *"];
+  flight -> aux [style=invis];
+  aux -> note [style=invis];
+}

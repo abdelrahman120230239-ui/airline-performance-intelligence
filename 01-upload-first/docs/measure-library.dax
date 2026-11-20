@@ -1,0 +1,347 @@
+// DAX model measure definitions. Copy one measure at a time or use the embedded TMDL.
+
+// 01 Volume and outcomes | BTS scheduled segment rows in context, including cancellations and diversions.
+Scheduled Flights =
+COUNTROWS ( FactFlight )
+
+// 01 Volume and outcomes | Rows with the BTS cancellation flag equal to 0, including diversions.
+Non-Cancelled Flights =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE ( CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[Cancelled] = 0 ) ), 0 )
+)
+
+// 01 Volume and outcomes | Non-cancelled and non-diverted rows, including any missing arrival delay.
+Completed Flights =
+[Non-Cancelled Flights] - [Diverted Flights]
+
+// 01 Volume and outcomes | Completed rows with observed signed arrival delay.
+Comparable Arrivals =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[ArrivalOutcome] IN { "On time", "Delayed 15+" } ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Comparable arrivals with signed delay below 15 minutes.
+On-Time Arrivals =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[ArrivalOutcome] = "On time" ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Comparable arrivals with signed delay at or above 15 minutes.
+Delayed Arrivals =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[ArrivalOutcome] = "Delayed 15+" ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Non-cancelled rows with observed signed departure delay. Diversions can qualify.
+Comparable Departures =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[DepartureOutcome] IN { "On time", "Delayed 15+" } ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Comparable departures with signed delay below 15 minutes.
+On-Time Departures =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[DepartureOutcome] = "On time" ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Comparable departures with signed delay at or above 15 minutes.
+Delayed Departures =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[DepartureOutcome] = "Delayed 15+" ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Rows with the BTS cancellation flag equal to 1.
+Cancelled Flights =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[Cancelled] = 1 ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Rows with the BTS diversion flag equal to 1.
+Diverted Flights =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[Diverted] = 1 ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Completed rows missing signed arrival delay.
+Missing Arrival Delay =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[ArrivalOutcome] = "Missing arrival delay" ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Non-cancelled rows missing signed departure delay.
+Missing Departure Delay =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[DepartureOutcome] = "Missing departure delay" ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Comparable arrivals at least 60 minutes late. Portfolio severity threshold.
+Flights Delayed 60+ Minutes =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[ArrivalOutcome] = "Delayed 15+" ), KEEPFILTERS ( FactFlight[ArrivalDelay] >= 60 ) ),
+        0
+    )
+)
+
+// 01 Volume and outcomes | Delayed arrivals with at least one reported nonblank cause-minute field.
+Late Arrivals With Reported Cause =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE (
+        CALCULATE ( [Scheduled Flights], KEEPFILTERS ( FactFlight[HasReportedCause] = TRUE () ) ),
+        0
+    )
+)
+
+// 02 Reliability | Arrival OTP using BTS's cutoff and a comparable-arrival denominator.
+On-Time Arrival % =
+DIVIDE ( [On-Time Arrivals], [Comparable Arrivals] )
+
+// 02 Reliability | Share of comparable arrivals at least 15 minutes late.
+Arrival Delay % =
+DIVIDE ( [Delayed Arrivals], [Comparable Arrivals] )
+
+// 02 Reliability | Departure OTP using the same cutoff, with departure-specific eligibility.
+On-Time Departure % =
+DIVIDE ( [On-Time Departures], [Comparable Departures] )
+
+// 02 Reliability | Share of comparable departures at least 15 minutes late.
+Departure Delay % =
+DIVIDE ( [Delayed Departures], [Comparable Departures] )
+
+// 02 Reliability | Share of all scheduled records that were cancelled.
+Cancellation % =
+DIVIDE ( [Cancelled Flights], [Scheduled Flights] )
+
+// 02 Reliability | Share of all scheduled records that were diverted.
+Diversion % =
+DIVIDE ( [Diverted Flights], [Scheduled Flights] )
+
+// 02 Reliability | Share of all scheduled records that were neither cancelled nor diverted.
+Completion % =
+DIVIDE ( [Completed Flights], [Scheduled Flights] )
+
+// 02 Reliability | Share of comparable arrivals at least 60 minutes late.
+60+ Minute Arrival Delay % =
+DIVIDE ( [Flights Delayed 60+ Minutes], [Comparable Arrivals] )
+
+// 02 Reliability | Share of 15+ late arrivals with any reported cause-minute field.
+Reported Cause Coverage % =
+DIVIDE ( [Late Arrivals With Reported Cause], [Delayed Arrivals] )
+
+// 03 Delay and reasons | Sum of the signed arrival delay on comparable arrivals at least 15 minutes late.
+Arrival Delay Minutes 15+ =
+IF ( NOT ISBLANK ( [Scheduled Flights] ),
+    COALESCE ( CALCULATE (
+        SUM ( FactFlight[ArrivalDelay] ),
+        KEEPFILTERS ( FactFlight[ArrivalOutcome] = "Delayed 15+" )
+    ), 0 )
+)
+
+// 03 Delay and reasons | Mean delay severity on arrivals at least 15 minutes late.
+Avg Minutes per Delayed Arrival =
+DIVIDE ( [Arrival Delay Minutes 15+], [Delayed Arrivals] )
+
+// 03 Delay and reasons | Average signed delay on comparable arrivals. Early values remain negative.
+Avg Signed Arrival Delay =
+CALCULATE ( AVERAGE ( FactFlight[ArrivalDelay] ),
+    KEEPFILTERS ( FactFlight[ArrivalOutcome] IN { "On time", "Delayed 15+" } )
+)
+
+// 03 Delay and reasons | Sums the selected BTS attribution fields on eligible late arrivals. Totals add the five cause groups.
+Reported Cause Minutes =
+CALCULATE (
+    SUMX (
+        VALUES ( DimDelayCause[Cause] ),
+        SWITCH (
+            DimDelayCause[Cause],
+            "Air carrier", CALCULATE ( SUM ( FactFlight[CarrierDelay] ) ),
+            "Weather", CALCULATE ( SUM ( FactFlight[WeatherDelay] ) ),
+            "National Aviation System", CALCULATE ( SUM ( FactFlight[NASDelay] ) ),
+            "Security", CALCULATE ( SUM ( FactFlight[SecurityDelay] ) ),
+            "Late-arriving aircraft", CALCULATE ( SUM ( FactFlight[LateAircraftDelay] ) )
+        )
+    ),
+    KEEPFILTERS ( FactFlight[ArrivalOutcome] = "Delayed 15+" )
+)
+
+// 03 Delay and reasons | Selected cause minutes divided by all reported cause minutes in the same operational context.
+Reported Cause Share % =
+DIVIDE ( [Reported Cause Minutes],
+    CALCULATE ( [Reported Cause Minutes], ALL ( DimDelayCause ) )
+)
+
+// 03 Delay and reasons | Cancellations in the selected reason divided by all cancellations in the same operational context.
+Cancellation Reason Share % =
+IF ( [Cancelled Flights] > 0,
+    DIVIDE ( [Cancelled Flights], CALCULATE ( [Cancelled Flights], ALL ( DimCancellation ) ) )
+)
+
+// 04 Benchmarking | Weighted on-time rate with all permitted carriers, retaining date and geography. RLS still applies.
+Network On-Time Arrival % =
+CALCULATE ( [On-Time Arrival %], ALL ( DimCarrier ) )
+
+// 04 Benchmarking | Carrier OTP minus weighted network OTP in percentage points.
+On-Time Gap vs Network pp =
+VAR Actual = [On-Time Arrival %]
+VAR Network = [Network On-Time Arrival %]
+RETURN
+    IF ( NOT ISBLANK ( Actual ) && NOT ISBLANK ( Network ), 100 * ( Actual - Network ) )
+
+// 04 Benchmarking | Flight-volume share within the carriers selected outside the current visual row.
+Carrier Share of Selected Flights % =
+DIVIDE (
+    [Scheduled Flights],
+    CALCULATE ( [Scheduled Flights], ALLSELECTED ( DimCarrier ) )
+)
+
+// 04 Benchmarking | Dense descending OTP rank among selected, eligible carriers. Minimum 1,000 comparable arrivals. Rates round to six decimal places for rank ties.
+Carrier OTP Rank =
+VAR MinimumArrivals = 1000
+VAR Peers =
+    FILTER ( ALLSELECTED ( DimCarrier[Carrier] ), [Comparable Arrivals] >= MinimumArrivals )
+RETURN
+    IF ( ISINSCOPE ( DimCarrier[Carrier] ) && [Comparable Arrivals] >= MinimumArrivals,
+        RANKX ( Peers, ROUND ( [On-Time Arrival %], 6 ), , DESC, DENSE )
+    )
+
+// 04 Benchmarking | Dense descending delay-minute rank among selected directional routes with at least 500 comparable arrivals.
+Route Delay Burden Rank =
+VAR MinimumArrivals = 500
+VAR Routes =
+    FILTER ( ALLSELECTED ( DimRoute[Route] ), [Comparable Arrivals] >= MinimumArrivals )
+RETURN
+    IF ( ISINSCOPE ( DimRoute[Route] ) && [Comparable Arrivals] >= MinimumArrivals,
+        RANKX ( Routes, [Arrival Delay Minutes 15+], , DESC, DENSE )
+    )
+
+// 05 Time intelligence | Reported year-to-date scheduled flights, shown only in single-year context with source coverage.
+Scheduled Flights YTD =
+IF (
+    HASONEVALUE ( DimDate[Year] ) &&
+    CALCULATE ( COUNTROWS ( DimDate ), KEEPFILTERS ( DimDate[IsInScope] = TRUE () ) ) > 0,
+    CALCULATE ( [Scheduled Flights], DATESYTD ( DimDate[Date] ) )
+)
+
+// 05 Time intelligence | Weighted reported year-to-date arrival OTP, shown only in single-year context with source coverage.
+On-Time Arrival % YTD =
+IF (
+    HASONEVALUE ( DimDate[Year] ) &&
+    CALCULATE ( COUNTROWS ( DimDate ), KEEPFILTERS ( DimDate[IsInScope] = TRUE () ) ) > 0,
+    CALCULATE ( [On-Time Arrival %], DATESYTD ( DimDate[Date] ) )
+)
+
+// 05 Time intelligence | Prior-year scheduled flights for exactly matched covered day/month pairs.
+Scheduled Flights LY Matched =
+VAR CoveredDates =
+    CALCULATETABLE ( VALUES ( DimDate[Date] ), KEEPFILTERS ( DimDate[IsInScope] = TRUE () ) )
+VAR MatchedDates =
+    FILTER (
+        CoveredDates,
+        VAR ThisDate = DimDate[Date]
+        VAR PriorDate = EDATE ( ThisDate, -12 )
+        RETURN
+            DAY ( ThisDate ) = DAY ( PriorDate )
+                && CONTAINS ( ALL ( DimDate ), DimDate[Date], PriorDate, DimDate[IsInScope], TRUE () )
+    )
+
+RETURN
+    CALCULATE ( [Scheduled Flights], REMOVEFILTERS ( DimDate ), TREATAS ( SELECTCOLUMNS ( MatchedDates, "PriorDate", EDATE ( DimDate[Date], -12 ) ), DimDate[Date] ) )
+
+// 05 Time intelligence | Prior-year weighted OTP for exactly matched covered day/month pairs.
+On-Time Arrival % LY Matched =
+VAR CoveredDates =
+    CALCULATETABLE ( VALUES ( DimDate[Date] ), KEEPFILTERS ( DimDate[IsInScope] = TRUE () ) )
+VAR MatchedDates =
+    FILTER (
+        CoveredDates,
+        VAR ThisDate = DimDate[Date]
+        VAR PriorDate = EDATE ( ThisDate, -12 )
+        RETURN
+            DAY ( ThisDate ) = DAY ( PriorDate )
+                && CONTAINS ( ALL ( DimDate ), DimDate[Date], PriorDate, DimDate[IsInScope], TRUE () )
+    )
+
+RETURN
+    CALCULATE ( [On-Time Arrival %], REMOVEFILTERS ( DimDate ), TREATAS ( SELECTCOLUMNS ( MatchedDates, "PriorDate", EDATE ( DimDate[Date], -12 ) ), DimDate[Date] ) )
+
+// 05 Time intelligence | Weighted OTP over current dates with covered prior-year matches.
+On-Time Arrival % Current Matched =
+VAR CoveredDates =
+    CALCULATETABLE ( VALUES ( DimDate[Date] ), KEEPFILTERS ( DimDate[IsInScope] = TRUE () ) )
+VAR MatchedDates =
+    FILTER (
+        CoveredDates,
+        VAR ThisDate = DimDate[Date]
+        VAR PriorDate = EDATE ( ThisDate, -12 )
+        RETURN
+            DAY ( ThisDate ) = DAY ( PriorDate )
+                && CONTAINS ( ALL ( DimDate ), DimDate[Date], PriorDate, DimDate[IsInScope], TRUE () )
+    )
+
+RETURN
+    CALCULATE ( [On-Time Arrival %], REMOVEFILTERS ( DimDate ), TREATAS ( MatchedDates, DimDate[Date] ) )
+
+// 05 Time intelligence | Current matched-date OTP minus prior matched-date OTP, in percentage points. Feb 29 is excluded if unpaired.
+On-Time Arrival YoY pp =
+VAR Actual = [On-Time Arrival % Current Matched]
+VAR Prior = [On-Time Arrival % LY Matched]
+RETURN IF ( NOT ISBLANK ( Actual ) && NOT ISBLANK ( Prior ), 100 * ( Actual - Prior ) )
+
+// 06 Report labels | Lists the covered months in the current context.
+Selected Period =
+VAR Months =
+    CALCULATETABLE ( VALUES ( DimDate[Year Month] ), KEEPFILTERS ( DimDate[IsInScope] = TRUE () ) )
+RETURN
+    IF ( ISEMPTY ( Months ), "No covered dates",
+        CONCATENATEX ( Months, DimDate[Year Month], " · ", DimDate[Year Month], ASC )
+    )
+
+// 06 Report labels | Dynamic title showing the selected covered months.
+Executive Trend Title =
+"Arrival reliability | " & [Selected Period]
+
+// 06 Report labels | Dynamic title showing the selected covered months.
+Benchmark Title =
+"Carrier comparison | " & [Selected Period]
+
+// 06 Report labels | Dynamic title showing the selected covered months.
+Route Title =
+"Directional routes | " & [Selected Period]
+
+// 06 Report labels | Dynamic title showing the selected covered months.
+Disruption Title =
+"Reported delay attribution | " & [Selected Period]
+
+// 06 Report labels | Displays the directional route passed to the drill-through page.
+Drillthrough Title =
+"Flight records | " & SELECTEDVALUE ( DimRoute[Route], "Select a route" )

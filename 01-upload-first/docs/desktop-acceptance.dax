@@ -1,0 +1,166 @@
+// Paste the entire file into Power BI Desktop DAX Query View after refresh.
+// Use the unrestricted model. The manual interaction and RLS checks are separate.
+// Every output row should say PASS. Rate comparisons allow rounding in the source CSV.
+
+EVALUATE
+VAR Month202401 =
+    CALCULATETABLE (
+        UNION (
+            ROW ( "Check", "2024-01 / Scheduled Flights", "Actual", [Scheduled Flights], "Expected", 547271 ),
+            ROW ( "Check", "2024-01 / Comparable Arrivals", "Actual", [Comparable Arrivals], "Expected", 525370 ),
+            ROW ( "Check", "2024-01 / On-Time Arrivals", "Actual", [On-Time Arrivals], "Expected", 398960 ),
+            ROW ( "Check", "2024-01 / Delayed Arrivals", "Actual", [Delayed Arrivals], "Expected", 126410 ),
+            ROW ( "Check", "2024-01 / Comparable Departures", "Actual", [Comparable Departures], "Expected", 526882 ),
+            ROW ( "Check", "2024-01 / On-Time Departures", "Actual", [On-Time Departures], "Expected", 404943 ),
+            ROW ( "Check", "2024-01 / Cancelled Flights", "Actual", [Cancelled Flights], "Expected", 20389 ),
+            ROW ( "Check", "2024-01 / Diverted Flights", "Actual", [Diverted Flights], "Expected", 1512 ),
+            ROW ( "Check", "2024-01 / Flights Delayed 60+ Minutes", "Actual", [Flights Delayed 60+ Minutes], "Expected", 46133 ),
+            ROW ( "Check", "2024-01 / Arrival Delay Minutes 15+", "Actual", [Arrival Delay Minutes 15+], "Expected", 9538664 ),
+            ROW ( "Check", "2024-01 / Reported Cause Minutes", "Actual", [Reported Cause Minutes], "Expected", 9538664 ),
+            ROW ( "Check", "2024-01 / On-Time Arrival %", "Actual", [On-Time Arrival %], "Expected", 0.75938862 ),
+            ROW ( "Check", "2024-01 / On-Time Departure %", "Actual", [On-Time Departure %], "Expected", 0.76856488 ),
+            ROW ( "Check", "2024-01 / Cancellation %", "Actual", [Cancellation %], "Expected", 0.03725577 )
+        ),
+        TREATAS ( { "2024-01" }, DimDate[Year Month] )
+    )
+
+VAR Month202402 =
+    CALCULATETABLE (
+        UNION (
+            ROW ( "Check", "2024-02 / Scheduled Flights", "Actual", [Scheduled Flights], "Expected", 519221 ),
+            ROW ( "Check", "2024-02 / Comparable Arrivals", "Actual", [Comparable Arrivals], "Expected", 515269 ),
+            ROW ( "Check", "2024-02 / On-Time Arrivals", "Actual", [On-Time Arrivals], "Expected", 433233 ),
+            ROW ( "Check", "2024-02 / Delayed Arrivals", "Actual", [Delayed Arrivals], "Expected", 82036 ),
+            ROW ( "Check", "2024-02 / Comparable Departures", "Actual", [Comparable Departures], "Expected", 516219 ),
+            ROW ( "Check", "2024-02 / On-Time Departures", "Actual", [On-Time Departures], "Expected", 436232 ),
+            ROW ( "Check", "2024-02 / Cancelled Flights", "Actual", [Cancelled Flights], "Expected", 3002 ),
+            ROW ( "Check", "2024-02 / Diverted Flights", "Actual", [Diverted Flights], "Expected", 950 ),
+            ROW ( "Check", "2024-02 / Flights Delayed 60+ Minutes", "Actual", [Flights Delayed 60+ Minutes], "Expected", 24390 ),
+            ROW ( "Check", "2024-02 / Arrival Delay Minutes 15+", "Actual", [Arrival Delay Minutes 15+], "Expected", 5257296 ),
+            ROW ( "Check", "2024-02 / Reported Cause Minutes", "Actual", [Reported Cause Minutes], "Expected", 5257296 ),
+            ROW ( "Check", "2024-02 / On-Time Arrival %", "Actual", [On-Time Arrival %], "Expected", 0.84078996 ),
+            ROW ( "Check", "2024-02 / On-Time Departure %", "Actual", [On-Time Departure %], "Expected", 0.84505220 ),
+            ROW ( "Check", "2024-02 / Cancellation %", "Actual", [Cancellation %], "Expected", 0.00578174 )
+        ),
+        TREATAS ( { "2024-02" }, DimDate[Year Month] )
+    )
+
+VAR Month202501 =
+    CALCULATETABLE (
+        UNION (
+            ROW ( "Check", "2025-01 / Scheduled Flights", "Actual", [Scheduled Flights], "Expected", 539747 ),
+            ROW ( "Check", "2025-01 / Comparable Arrivals", "Actual", [Comparable Arrivals], "Expected", 522269 ),
+            ROW ( "Check", "2025-01 / On-Time Arrivals", "Actual", [On-Time Arrivals], "Expected", 424139 ),
+            ROW ( "Check", "2025-01 / Delayed Arrivals", "Actual", [Delayed Arrivals], "Expected", 98130 ),
+            ROW ( "Check", "2025-01 / Comparable Departures", "Actual", [Comparable Departures], "Expected", 523435 ),
+            ROW ( "Check", "2025-01 / On-Time Departures", "Actual", [On-Time Departures], "Expected", 428003 ),
+            ROW ( "Check", "2025-01 / Cancelled Flights", "Actual", [Cancelled Flights], "Expected", 16312 ),
+            ROW ( "Check", "2025-01 / Diverted Flights", "Actual", [Diverted Flights], "Expected", 1166 ),
+            ROW ( "Check", "2025-01 / Flights Delayed 60+ Minutes", "Actual", [Flights Delayed 60+ Minutes], "Expected", 33245 ),
+            ROW ( "Check", "2025-01 / Arrival Delay Minutes 15+", "Actual", [Arrival Delay Minutes 15+], "Expected", 6943994 ),
+            ROW ( "Check", "2025-01 / Reported Cause Minutes", "Actual", [Reported Cause Minutes], "Expected", 6943994 ),
+            ROW ( "Check", "2025-01 / On-Time Arrival %", "Actual", [On-Time Arrival %], "Expected", 0.81210832 ),
+            ROW ( "Check", "2025-01 / On-Time Departure %", "Actual", [On-Time Departure %], "Expected", 0.81768128 ),
+            ROW ( "Check", "2025-01 / Cancellation %", "Actual", [Cancellation %], "Expected", 0.03022157 )
+        ),
+        TREATAS ( { "2025-01" }, DimDate[Year Month] )
+    )
+
+VAR Month202502 =
+    CALCULATETABLE (
+        UNION (
+            ROW ( "Check", "2025-02 / Scheduled Flights", "Actual", [Scheduled Flights], "Expected", 504884 ),
+            ROW ( "Check", "2025-02 / Comparable Arrivals", "Actual", [Comparable Arrivals], "Expected", 496476 ),
+            ROW ( "Check", "2025-02 / On-Time Arrivals", "Actual", [On-Time Arrivals], "Expected", 393374 ),
+            ROW ( "Check", "2025-02 / Delayed Arrivals", "Actual", [Delayed Arrivals], "Expected", 103102 ),
+            ROW ( "Check", "2025-02 / Comparable Departures", "Actual", [Comparable Departures], "Expected", 497479 ),
+            ROW ( "Check", "2025-02 / On-Time Departures", "Actual", [On-Time Departures], "Expected", 399809 ),
+            ROW ( "Check", "2025-02 / Cancelled Flights", "Actual", [Cancelled Flights], "Expected", 7405 ),
+            ROW ( "Check", "2025-02 / Diverted Flights", "Actual", [Diverted Flights], "Expected", 1003 ),
+            ROW ( "Check", "2025-02 / Flights Delayed 60+ Minutes", "Actual", [Flights Delayed 60+ Minutes], "Expected", 36874 ),
+            ROW ( "Check", "2025-02 / Arrival Delay Minutes 15+", "Actual", [Arrival Delay Minutes 15+], "Expected", 7411011 ),
+            ROW ( "Check", "2025-02 / Reported Cause Minutes", "Actual", [Reported Cause Minutes], "Expected", 7411011 ),
+            ROW ( "Check", "2025-02 / On-Time Arrival %", "Actual", [On-Time Arrival %], "Expected", 0.79233236 ),
+            ROW ( "Check", "2025-02 / On-Time Departure %", "Actual", [On-Time Departure %], "Expected", 0.80367010 ),
+            ROW ( "Check", "2025-02 / Cancellation %", "Actual", [Cancellation %], "Expected", 0.01466674 )
+        ),
+        TREATAS ( { "2025-02" }, DimDate[Year Month] )
+    )
+
+VAR Threshold =
+    CALCULATETABLE (
+        UNION (
+            ROW ( "Check", "15-minute threshold fixture / Scheduled Flights", "Actual", [Scheduled Flights], "Expected", 4 ),
+            ROW ( "Check", "15-minute threshold fixture / Comparable Arrivals", "Actual", [Comparable Arrivals], "Expected", 2 ),
+            ROW ( "Check", "15-minute threshold fixture / On-Time Arrivals", "Actual", [On-Time Arrivals], "Expected", 1 ),
+            ROW ( "Check", "15-minute threshold fixture / Delayed Arrivals", "Actual", [Delayed Arrivals], "Expected", 1 ),
+            ROW ( "Check", "15-minute threshold fixture / Cancelled Flights", "Actual", [Cancelled Flights], "Expected", 1 ),
+            ROW ( "Check", "15-minute threshold fixture / Diverted Flights", "Actual", [Diverted Flights], "Expected", 1 ),
+            ROW ( "Check", "15-minute threshold fixture / On-Time Arrival %", "Actual", [On-Time Arrival %], "Expected", 0.5 ),
+            ROW ( "Check", "15-minute threshold fixture / Cancellation %", "Actual", [Cancellation %], "Expected", 0.25 ),
+            ROW ( "Check", "15-minute threshold fixture / Diversion %", "Actual", [Diversion %], "Expected", 0.25 ),
+            ROW ( "Check", "15-minute threshold fixture / Arrival Delay Minutes 15+", "Actual", [Arrival Delay Minutes 15+], "Expected", 15 ),
+            ROW ( "Check", "15-minute threshold fixture / Reported Cause Minutes", "Actual", [Reported Cause Minutes], "Expected", 15 )
+        ),
+        TREATAS ( { 2025010000472, 2025010000416, 2025010000085, 2025010000054 }, FactFlight[SourceRowID] )
+    )
+
+VAR DirectionalRoute =
+    CALCULATETABLE (
+        UNION (
+            ROW ( "Check", "AA JFK to LAX on 2025-01-01 / Scheduled Flights", "Actual", [Scheduled Flights], "Expected", 9 ),
+            ROW ( "Check", "AA JFK to LAX on 2025-01-01 / Comparable Arrivals", "Actual", [Comparable Arrivals], "Expected", 9 ),
+            ROW ( "Check", "AA JFK to LAX on 2025-01-01 / On-Time Arrival %", "Actual", [On-Time Arrival %], "Expected", 1 ),
+            ROW ( "Check", "AA JFK to LAX on 2025-01-01 / Cancelled Flights", "Actual", [Cancelled Flights], "Expected", 0 ),
+            ROW ( "Check", "AA JFK to LAX on 2025-01-01 / Arrival Delay Minutes 15+", "Actual", [Arrival Delay Minutes 15+], "Expected", 0 )
+        ),
+        TREATAS ( { DATE ( 2025, 1, 1 ) }, DimDate[Date] ),
+        TREATAS ( { 19805 }, DimCarrier[CarrierID] ),
+        TREATAS ( { 12478 }, DimOriginAirport[AirportID] ),
+        TREATAS ( { 12892 }, DimDestinationAirport[AirportID] )
+    )
+
+VAR MatchedDates =
+    CALCULATETABLE (
+        UNION (
+            ROW ( "Check", "February 2025 date intelligence / Scheduled Flights YTD", "Actual", [Scheduled Flights YTD], "Expected", 1044631 ),
+            ROW ( "Check", "February 2025 date intelligence / Scheduled Flights LY Matched", "Actual", [Scheduled Flights LY Matched], "Expected", 500116 ),
+            ROW ( "Check", "February 2025 date intelligence / On-Time Arrival % LY Matched", "Actual", [On-Time Arrival % LY Matched], "Expected", DIVIDE ( 417143, 496267 ) ),
+            ROW ( "Check", "February 2025 date intelligence / On-Time Arrival YoY pp", "Actual", [On-Time Arrival YoY pp], "Expected", 100 * ( DIVIDE ( 393374, 496476 ) - DIVIDE ( 417143, 496267 ) ) )
+        ),
+        TREATAS ( { "2025-02" }, DimDate[Year Month] )
+    )
+
+VAR Benchmark =
+    CALCULATETABLE (
+        UNION (
+            ROW ( "Check", "Jan–Feb 2025 AA benchmark / Scheduled Flights", "Actual", [Scheduled Flights], "Expected", 144964 ),
+            ROW ( "Check", "Jan–Feb 2025 AA benchmark / On-Time Arrival %", "Actual", [On-Time Arrival %], "Expected", DIVIDE ( 112895, 140890 ) ),
+            ROW ( "Check", "Jan–Feb 2025 AA benchmark / Network On-Time Arrival %", "Actual", [Network On-Time Arrival %], "Expected", DIVIDE ( 817513, 1018745 ) )
+        ),
+        TREATAS ( { "2025-01", "2025-02" }, DimDate[Year Month] ),
+        TREATAS ( { 19805 }, DimCarrier[CarrierID] )
+    )
+
+VAR Uncovered =
+    CALCULATETABLE (
+        UNION (
+            ROW ( "Check", "Uncovered March 2025 / IF ( ISBLANK ( [On-Time Arrival %] ), 1, 0 )", "Actual", IF ( ISBLANK ( [On-Time Arrival %] ), 1, 0 ), "Expected", 1 ),
+            ROW ( "Check", "Uncovered March 2025 / IF ( ISBLANK ( [Scheduled Flights YTD] ), 1, 0 )", "Actual", IF ( ISBLANK ( [Scheduled Flights YTD] ), 1, 0 ), "Expected", 1 )
+        ),
+        TREATAS ( { "2025-03" }, DimDate[Year Month] )
+    )
+
+VAR Checks =
+    UNION ( Month202401, Month202402, Month202501, Month202502, Threshold, DirectionalRoute, MatchedDates, Benchmark, Uncovered )
+RETURN
+    ADDCOLUMNS (
+        Checks,
+        "Result",
+            IF (
+                NOT ISBLANK ( [Actual] ) && ABS ( [Actual] - [Expected] ) <= 0.00000001,
+                "PASS",
+                "FAIL"
+            )
+    )
+ORDER BY [Result], [Check]

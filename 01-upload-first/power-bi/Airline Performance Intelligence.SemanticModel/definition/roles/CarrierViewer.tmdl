@@ -1,0 +1,11 @@
+role CarrierViewer
+	modelPermission: read
+
+	tablePermission CarrierAccess = CarrierAccess[UPN] = LOWER ( USERPRINCIPALNAME () )
+
+	tablePermission DimCarrier =
+			CONTAINS (
+			    CarrierAccess,
+			    CarrierAccess[UPN], LOWER ( USERPRINCIPALNAME () ),
+			    CarrierAccess[CarrierID], DimCarrier[CarrierID]
+			)

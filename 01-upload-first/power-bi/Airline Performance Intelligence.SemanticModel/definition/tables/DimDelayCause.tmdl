@@ -1,0 +1,23 @@
+table DimDelayCause
+
+	column Cause
+		dataType: string
+		isKey
+		sortByColumn: CauseOrder
+		summarizeBy: none
+		sourceColumn: Cause
+
+	column CauseOrder
+		dataType: int64
+		isHidden
+		summarizeBy: none
+		sourceColumn: CauseOrder
+
+	partition DimDelayCause = m
+		mode: import
+		source =
+			#table(
+			    type table [Cause = text, CauseOrder = Int64.Type],
+			    {{"Air carrier", 1}, {"Weather", 2}, {"National Aviation System", 3},
+			     {"Security", 4}, {"Late-arriving aircraft", 5}}
+			)
